@@ -1,0 +1,4 @@
+﻿  Lab1.cpp
+C:\Users\dengi\source\repos_OOP\OOP\Lab1\Lab1\Lab1.cpp(199,33): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\dengi\source\repos_OOP\OOP\Lab1\Lab1\Lab1.cpp(254,28): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  Lab1.vcxproj -> C:\Users\dengi\source\repos_OOP\OOP\Lab1\x64\Debug\Lab1.exe
