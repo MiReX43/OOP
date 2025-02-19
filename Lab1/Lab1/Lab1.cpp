@@ -4,6 +4,20 @@
 
 using namespace std;
 
+double calculateF(double x, double epsilon) {
+    double result = 0.0;
+    double term = 1.0;
+    int n = 1;
+
+    while (fabs(term) > epsilon) {
+        term = pow(-1, n - 1) * n * pow(x, n - 1);
+        result += term;
+        n++;
+    }
+
+    return result;
+}
+
 int main() {
 
     setlocale(LC_ALL, "");
@@ -11,7 +25,7 @@ int main() {
     int task;
 
     // Меню для выбора задачи
-    cout << "Выберите задачу для проверки преподавателем:" << endl;
+    cout << "Выберите задачу:" << endl;
     cout << "1. Задача 1" << endl;
     cout << "2. Задача 2" << endl;
     cout << "3. Задача 3" << endl;
@@ -39,35 +53,16 @@ int main() {
     case 2: {
 
         //Ex 2
-             // Константа для точности
-        const double EPSILON = 0.001;
+ 
+        const double epsilon = 0.001;
+        
+        double x1 = 0.1;
+        double x2 = 0.77;
+        double x3 = -0.9;
 
-        // Ввод значения x
-        double x;
-        cout << "Введите значение x (-1 < x < 1): ";
-        cin >> x;
-
-        // Проверка диапазона x
-        if (x <= -1 || x >= 1) {
-            cout << "Ошибка: значение x должно быть в пределах (-1, 1)" << endl;
-            return 1;
-        }
-
-        // Переменные для суммирования ряда
-        double term = 1.0;
-        double sum = term;
-        int N = 1;
-
-        // Вычисление ряда
-        while (abs(term) > EPSILON) {
-            term *= -x * N;
-            sum += term;
-            N++;
-        }
-
-        // Вывод результата
-        cout << fixed << setprecision(4);
-        cout << "F(" << x << ") = " << sum << endl;
+        cout << "Результат для x1 = 0.1: " << calculateF(x1, epsilon) << endl;
+        cout << "Результат для x2 = 0.77: " << calculateF(x2, epsilon) << endl;
+        cout << "Результат для x3 = -0.9: " << calculateF(x3, epsilon) << endl;
 
         break;
 
