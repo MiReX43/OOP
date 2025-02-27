@@ -5,7 +5,6 @@
 using namespace std;
 
 int main() {
-    setlocale(LC_ALL, "RUS");
 
 	const int ROW = 5;
 	const int COL = 5;
@@ -24,6 +23,6 @@ int main() {
         cout << endl;
     }
 
-    cout << "Êîë-âî íåîòðèöàòåëüíûõ ýëåìåíòîâ ìàññèâà: " << plus << endl;
+    cout << "Š®«-¢® ­¥®âà¨æ â¥«ì­ëå í«¥¬¥­â®¢ ¬ áá¨¢ : " << plus << endl;
   
 }
