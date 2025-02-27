@@ -1,20 +1,21 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
-const int N = 4; // Размерность матрицы (можно изменить в пределах 4 <= n <= 16)
+const int N = 5; // Р Р°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°С‚СЂРёС†С‹
 
-// Функция заполнения матрицы змейкой
+// Р—Р°РїРѕР»РЅРµРЅРёРµ Р·РјРµР№РєРѕР№
 void fillarr(int arr[N][N]) {
-    int num = 1;
+    int num = 0;
     for (int i = 0; i < N; i++) {
-        if (i % 2 == 0) { // Четные строки (идем слева направо)
+        if (i % 2 == 0) {
             for (int j = 0; j < N; j++) {
                 arr[i][j] = num++;
             }
         }
-        else { // Нечетные строки (идем справа налево)
+        else {
             for (int j = N - 1; j >= 0; j--) {
                 arr[i][j] = num++;
             }
@@ -22,31 +23,52 @@ void fillarr(int arr[N][N]) {
     }
 }
 
-// Функция вывода матрицы
+// Р’С‹РІРѕРґ double-РјР°С‚СЂРёС†С‹
 void printArr(double arr[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            cout << setw(8) << fixed << setprecision(3) << arr[i][j] << " ";
+            cout << setw(12) << fixed << setprecision(6) << arr[i][j] << " ";
         }
         cout << endl;
     }
 }
- 
-// Функция вывода целочисленной матрицы
+
+// Р’С‹РІРѕРґ int-РјР°С‚СЂРёС†С‹
 void printArrInt(int arr[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             cout << setw(4) << arr[i][j] << " ";
         }
-        cout << endl; 
+        cout << endl;
     }
 }
 
-// Функция нахождения обратной матрицы методом Гаусса-Жордана
+// РџСЂРѕРІРµСЂРєР° РґРµС‚РµСЂРјРёРЅР°РЅС‚Р° (С‡РµСЂРµР· СЂР°Р·Р»РѕР¶РµРЅРёРµ Р“Р°СѓСЃСЃР°)
+double determinant(double arr[N][N]) {
+    double temp[N][N];
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            temp[i][j] = arr[i][j];
+
+    double det = 1.0;
+    for (int i = 0; i < N; i++) {
+        if (fabs(temp[i][i]) < 1e-9) return 0; // Р•СЃР»Рё РґРёР°РіРѕРЅР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚ в‰€ 0, С‚Рѕ det = 0
+        det *= temp[i][i];
+        for (int j = i + 1; j < N; j++) {
+            double factor = temp[j][i] / temp[i][i];
+            for (int k = i; k < N; k++) {
+                temp[j][k] -= factor * temp[i][k];
+            }
+        }
+    }
+    return det;
+}
+
+// РћР±СЂР°С‚РЅР°СЏ РјР°С‚СЂРёС†Р° (Р“Р°СѓСЃСЃ-Р–РѕСЂРґР°РЅ)
 bool inverseArr(double arr[N][N], double inverse[N][N]) {
     double augmented[N][2 * N];
 
-    // Создание расширенной матрицы (исходная | единичная)
+    // РЎРѕР·РґР°РЅРёРµ СЂР°СЃС€РёСЂРµРЅРЅРѕР№ РјР°С‚СЂРёС†С‹
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             augmented[i][j] = arr[i][j];
@@ -54,10 +76,10 @@ bool inverseArr(double arr[N][N], double inverse[N][N]) {
         }
     }
 
-    // Прямой ход метода Гаусса
+    // РџСЂСЏРјРѕР№ С…РѕРґ
     for (int i = 0; i < N; i++) {
         double diagElement = augmented[i][i];
-        if (diagElement == 0) return false; // Матрица необратима
+        if (fabs(diagElement) < 1e-9) return false;
 
         for (int j = 0; j < 2 * N; j++) {
             augmented[i][j] /= diagElement;
@@ -73,17 +95,15 @@ bool inverseArr(double arr[N][N], double inverse[N][N]) {
         }
     }
 
-    // Копируем результат в inverse
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    // Р—Р°РїРёСЃС‹РІР°РµРј РѕР±СЂР°С‚РЅСѓСЋ С‡Р°СЃС‚СЊ
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
             inverse[i][j] = augmented[i][j + N];
-        }
-    }
 
     return true;
 }
 
-// Функция умножения матриц
+// РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†
 void multiplyMatrices(double A[N][N], double B[N][N], double result[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -94,37 +114,53 @@ void multiplyMatrices(double A[N][N], double B[N][N], double result[N][N]) {
         }
     }
 }
- 
-int main() {
 
+// РћРєСЂСѓРіР»РµРЅРёРµ РїРѕС‡С‚Рё РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†С‹
+void roundIdentity(double arr[N][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (fabs(arr[i][j]) < 1e-6) arr[i][j] = 0; // РЈР±РёСЂР°РµРј С€СѓРј
+            if (fabs(arr[i][j] - 1) < 1e-6) arr[i][j] = 1; // РћРєСЂСѓРіР»СЏРµРј Рє 1
+        }
+    }
+}
+
+int main() {
     setlocale(LC_ALL, "RUS");
     int arr[N][N];
-    double inverse[N][N];
-    double identity[N][N];
+    double inverse[N][N], identity[N][N];
 
     fillarr(arr);
 
-    cout << "Исходная матрица:" << endl;
+    cout << "РСЃС…РѕРґРЅР°СЏ РјР°С‚СЂРёС†Р°:\n";
     printArrInt(arr);
 
-    // Преобразуем в double
+    // РљРѕРЅРІРµСЂС‚РёСЂСѓРµРј РІ double
     double arrDouble[N][N];
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
             arrDouble[i][j] = arr[i][j];
 
-    // Находим обратную матрицу
+    // РџСЂРѕРІРµСЂРєР° РґРµС‚РµСЂРјРёРЅР°РЅС‚Р°
+    double det = determinant(arrDouble);
+    if (fabs(det) < 1e-9) {
+        cout << "\nРњР°С‚СЂРёС†Р° РЅРµРѕР±СЂР°С‚РёРјР° (РѕРїСЂРµРґРµР»РёС‚РµР»СЊ = 0)." << endl;
+        return 0;
+    }
+
+    // РќР°С…РѕР¶РґРµРЅРёРµ РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹
     if (inverseArr(arrDouble, inverse)) {
-        cout << "\nОбратная матрица:" << endl;
+        cout << "\nРћР±СЂР°С‚РЅР°СЏ РјР°С‚СЂРёС†Р°:\n";
         printArr(inverse);
 
-        // Проверяем, является ли обратная матрица корректной
+        // РџСЂРѕРІРµСЂСЏРµРј РѕР±СЂР°С‚РЅРѕСЃС‚СЊ
         multiplyMatrices(arrDouble, inverse, identity);
-        cout << "\nПроизведение исходной и обратной матрицы (должна быть единичная):" << endl;
+        roundIdentity(identity);
+        cout << "\nРџСЂРѕРёР·РІРµРґРµРЅРёРµ РёСЃС…РѕРґРЅРѕР№ Рё РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹ (= РµРґРёРЅРёС‡РЅР°СЏ):\n";
         printArr(identity);
     }
     else {
-        cout << "\nМатрица необратима (определитель равен 0)." << endl;
+        cout << "\nРћС€РёР±РєР°: РЅРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё РѕР±СЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Сѓ!" << endl;
     }
 
     return 0;
