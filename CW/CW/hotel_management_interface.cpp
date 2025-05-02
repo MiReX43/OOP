@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -13,7 +13,7 @@ int bookingCounter = 1;
 int paymentCounter = 1;
 int employeeCounter = 1;
 
-// ---------------- Класс Guest ----------------
+// ---------------- РљР»Р°СЃСЃ Guest ----------------
 class Guest {
     int id;
     string name;
@@ -42,11 +42,15 @@ public:
     }
 
     void displayInfo() const {
-        cout << "ID: " << id << ", Name: " << name << ", Phone: " << phone << ", Email: " << email << endl;
+        cout << "ID: " << id
+            << ", Р¤РРћ: " << name
+            << ", РўРµР»РµС„РѕРЅ: " << phone
+            << ", Email: " << email
+            << endl;
     }
 
     string toString() const {
-        // Формат: id,name,phone,email,passportData
+        // Р¤РѕСЂРјР°С‚: id,name,phone,email,passportData
         return to_string(id) + "," + name + "," + phone + "," + email + "," + passportData;
     }
 
@@ -63,7 +67,7 @@ public:
     }
 };
 
-// ---------------- Класс RoomCategory ----------------
+// ---------------- РљР»Р°СЃСЃ RoomCategory ----------------
 class RoomCategory {
     int id;
     string name;
@@ -87,7 +91,7 @@ public:
 
     void getServices() const {
         if (services.empty()) {
-            cout << "  (нет услуг)" << endl;
+            cout << "  (РЅРµС‚ СѓСЃР»СѓРі)" << endl;
         }
         else {
             for (size_t i = 0; i < services.size(); ++i) {
@@ -101,7 +105,7 @@ public:
     }
 
     string toString() const {
-        // Формат: id,name,description,service1;service2;service3...
+        // Р¤РѕСЂРјР°С‚: id,name,description,service1;service2;service3...
         string result = to_string(id) + "," + name + "," + description + ",";
         for (size_t i = 0; i < services.size(); ++i) {
             result += services[i];
@@ -132,7 +136,7 @@ public:
 };
 int RoomCategory::categoryCounter = 1;
 
-// ---------------- Класс Room ----------------
+// ---------------- РљР»Р°СЃСЃ Room ----------------
 class Room {
     int roomNumber;
     int categoryId;
@@ -153,13 +157,16 @@ public:
     double getPrice() const { return pricePerNight; }
 
     void displayDetails(const RoomCategory& category) const {
-        cout << "Room #: " << roomNumber << ", Category: " << category.getName()
-            << ", Capacity: " << capacity << ", Available: " << (isAvailable ? "Yes" : "No")
-            << ", Price: $" << pricePerNight << endl;
+        cout << "РќРѕРјРµСЂ #: " << roomNumber
+            << ", РљР°С‚РµРіРѕСЂРёСЏ: " << category.getName()
+            << ", РљРѕР»-РІРѕ РјРµСЃС‚: " << capacity
+            << ", Р”РѕСЃС‚СѓРїРµРЅ: " << (isAvailable ? "Р”Р°" : "РќРµС‚")
+            << ", Р¦РµРЅР°: $" << pricePerNight
+            << endl;
     }
 
     string toString() const {
-        // Формат: roomNumber,categoryId,capacity,isAvailable,price
+        // Р¤РѕСЂРјР°С‚: roomNumber,categoryId,capacity,isAvailable,price
         return to_string(roomNumber) + "," + to_string(categoryId) + "," + to_string(capacity)
             + "," + (isAvailable ? "1" : "0") + "," + to_string(pricePerNight);
     }
@@ -184,7 +191,7 @@ public:
 };
 int Room::roomCounter = 1;
 
-// ---------------- Класс Employee ----------------
+// ---------------- РљР»Р°СЃСЃ Employee ----------------
 class Employee {
     int employeeID;
     string name;
@@ -196,7 +203,10 @@ public:
     }
 
     void displayInfo() const {
-        cout << "Employee ID: " << employeeID << ", Name: " << name << ", Position: " << position << endl;
+        cout << "ID РЎРѕС‚СЂСѓРґРЅРёРєР°: " << employeeID
+            << ", Name: " << name
+            << ", Position: " << position
+            << endl;
     }
 
     string toString() const {
@@ -214,7 +224,7 @@ public:
     }
 };
 
-// ---------------- Класс Booking ----------------
+// ---------------- РљР»Р°СЃСЃ Booking ----------------
 class Booking {
     int bookingID;
     int guestId;
@@ -223,7 +233,7 @@ class Booking {
     string checkOutDate;
     string status; // active/cancelled/completed
 public:
-    Booking() : bookingID(0), guestId(0), roomNumber(0), status("active") {}
+    Booking() : bookingID(0), guestId(0), roomNumber(0), status("РђРєС‚РёРІРЅРѕ") {}
     Booking(int id, int gid, int rn, string in, string out, string st)
         : bookingID(id), guestId(gid), roomNumber(rn), checkInDate(in), checkOutDate(out), status(st) {
         if (id >= bookingCounter) bookingCounter = id + 1;
@@ -231,27 +241,33 @@ public:
 
     Booking(Guest g, Room r, string in, string out)
         : bookingID(bookingCounter++), guestId(g.getId()), roomNumber(r.getRoomNumber()),
-        checkInDate(in), checkOutDate(out), status("active") {}
+        checkInDate(in), checkOutDate(out), status("РђРєС‚РёРІРЅРѕ") {}
 
     int getID() const { return bookingID; }
     int getGuestId() const { return guestId; }
     int getRoomNumber() const { return roomNumber; }
     string getStatus() const { return status; }
 
-    void confirmBooking() { status = "active"; }
-    void cancelBooking() { status = "cancelled"; }
+    void confirmBooking() { status = "РђРєС‚РёРІРЅРѕ"; }
+    void cancelBooking() { status = "РћС‚РјРµРЅРµРЅРѕ"; }
+    void completBooking() { status = "Р—Р°РІРµСЂС€РµРЅРѕ"; }
 
     double calculateCost(double pricePerNight) const {
-        return 3.0 * pricePerNight; // Пример: фиксированное количество ночей
+        return 3.0 * pricePerNight; // РџСЂРёРјРµСЂ: С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРѕС‡РµР№
     }
 
     void display(const Guest& guest, const Room& room) const {
-        cout << "Booking ID: " << bookingID << ", Guest: " << guest.getName() << ", Room #: " << room.getRoomNumber()
-            << ", From: " << checkInDate << " To: " << checkOutDate << ", Status: " << status << endl;
+        cout << "ID Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ: " << bookingID
+            << ", Р“РѕСЃС‚СЊ: " << guest.getName()
+            << ", РќРѕРјРµСЂ #: " << room.getRoomNumber()
+            << ", РћС‚: " << checkInDate
+            << " Р”Рѕ: " << checkOutDate
+            << ", РЎС‚Р°С‚СѓСЃ: " << status
+            << endl;
     }
 
     string toString() const {
-        // Формат: bookingID,guestId,roomNumber,checkInDate,checkOutDate,status
+        // Р¤РѕСЂРјР°С‚: bookingID,guestId,roomNumber,checkInDate,checkOutDate,status
         return to_string(bookingID) + "," + to_string(guestId) + "," + to_string(roomNumber) + "," + checkInDate + "," + checkOutDate + "," + status;
     }
 
@@ -271,7 +287,7 @@ public:
     }
 };
 
-// ---------------- Класс Payment ----------------
+// ---------------- РљР»Р°СЃСЃ Payment ----------------
 class Payment {
     int paymentID;
     int bookingID;
@@ -289,16 +305,21 @@ public:
         : paymentID(paymentCounter++), bookingID(b.getID()), amount(amt), paymentMethod(method), paymentDate(date) {}
 
     void processPayment() {
-        cout << "Processing payment of $" << amount << " using " << paymentMethod << endl;
+        cout << "РћР±СЂР°Р±РѕС‚РєР° РїР»Р°С‚РµР¶Р° РІ СЂР°Р·РјРµСЂРµ $" << amount << " РёСЃРїРѕР»СЊР·СѓСЏ " << paymentMethod << endl;
     }
 
     void printReceipt() const {
-        cout << "Receipt for Payment ID: " << paymentID << ", Amount: $" << amount
-            << ", Date: " << paymentDate << endl;
+        cout
+            << "ID РљРІРёС‚Р°РЅС†РёРё: " << paymentID
+            << ", ID Р±СЂРѕРЅРёСЂРѕРІРЅРёСЏ: " << bookingID
+            << ", РЎСѓРјРјР°: $" << amount
+            << ", Р”Р°С‚Р°: " << paymentDate
+            << ", РЎРїРѕСЃРѕР± РѕРїР»Р°С‚С‹: " << paymentMethod
+            << endl;
     }
 
     string toString() const {
-        // Формат: paymentID,bookingID,amount,paymentMethod,paymentDate
+        // Р¤РѕСЂРјР°С‚: paymentID,bookingID,amount,paymentMethod,paymentDate
         return to_string(paymentID) + "," + to_string(bookingID) + "," + to_string(amount) + "," + paymentMethod + "," + paymentDate;
     }
 
@@ -317,7 +338,7 @@ public:
     }
 };
 
-// --- Функции чтения/записи данных ---
+// --- Р¤СѓРЅРєС†РёРё С‡С‚РµРЅРёСЏ/Р·Р°РїРёСЃРё РґР°РЅРЅС‹С… ---
 
 template <typename T>
 void saveToFile(const string& filename, const vector<T>& vec) {
@@ -340,7 +361,7 @@ void loadFromFile(const string& filename, vector<T>& vec) {
     fin.close();
 }
 
-// ----------------- Глобальные функции и меню -----------------
+// ----------------- Р“Р»РѕР±Р°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё Рё РјРµРЅСЋ -----------------
 
 void showMainMenu();
 void guestMenu(vector<Guest>& guests);
@@ -374,7 +395,7 @@ void saveAllData(vector<Guest>& guests, vector<RoomCategory>& categories, vector
     saveToFile<Payment>("Payment.txt", payments);
 }
 
-// Найти категорию по id
+// РќР°Р№С‚Рё РєР°С‚РµРіРѕСЂРёСЋ РїРѕ id
 RoomCategory* findCategoryById(vector<RoomCategory>& categories, int id) {
     for (auto& cat : categories) {
         if (cat.getId() == id)
@@ -383,7 +404,7 @@ RoomCategory* findCategoryById(vector<RoomCategory>& categories, int id) {
     return nullptr;
 }
 
-// Найти комнату по номеру
+// РќР°Р№С‚Рё РєРѕРјРЅР°С‚Сѓ РїРѕ РЅРѕРјРµСЂСѓ
 Room* findRoomByNumber(vector<Room>& rooms, int number) {
     for (auto& r : rooms) {
         if (r.getRoomNumber() == number)
@@ -392,7 +413,7 @@ Room* findRoomByNumber(vector<Room>& rooms, int number) {
     return nullptr;
 }
 
-// Найти гостя по ID
+// РќР°Р№С‚Рё РіРѕСЃС‚СЏ РїРѕ ID
 Guest* findGuestById(vector<Guest>& guests, int id) {
     for (auto& g : guests) {
         if (g.getId() == id)
@@ -401,7 +422,7 @@ Guest* findGuestById(vector<Guest>& guests, int id) {
     return nullptr;
 }
 
-// Найти бронирование по ID
+// РќР°Р№С‚Рё Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ РїРѕ ID
 Booking* findBookingById(vector<Booking>& bookings, int id) {
     for (auto& b : bookings) {
         if (b.getID() == id)
@@ -411,7 +432,7 @@ Booking* findBookingById(vector<Booking>& bookings, int id) {
 }
 
 int main() {
-    setlocale(LC_ALL,"RUS");
+    setlocale(LC_ALL, "Russian");
     vector<Guest> guests;
     vector<RoomCategory> categories;
     vector<Room> rooms;
@@ -421,14 +442,14 @@ int main() {
 
     loadAllData(guests, categories, rooms, employees, bookings, payments);
 
-    // Если нет категорий - инициализируем примером (чтобы было что редактировать)
+    // Р•СЃР»Рё РЅРµС‚ РєР°С‚РµРіРѕСЂРёР№ - РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїСЂРёРјРµСЂРѕРј (С‡С‚РѕР±С‹ Р±С‹Р»Рѕ С‡С‚Рѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ)
     if (categories.empty()) {
-        categories.push_back(RoomCategory("Standard", "Стандартный номер", { "WiFi", "Холодильник" }));
-        categories.push_back(RoomCategory("Deluxe", "Номер повышенной комфортности", { "WiFi", "Холодильник", "Кофемашина" }));
-        categories.push_back(RoomCategory("Suite", "Люкс", { "WiFi", "Холодильник", "Кофемашина", "Минибар" }));
+        categories.push_back(RoomCategory("Standard", "РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РЅРѕРјРµСЂ", { "WiFi", "РҐРѕР»РѕРґРёР»СЊРЅРёРє" }));
+        categories.push_back(RoomCategory("Deluxe", "РќРѕРјРµСЂ РїРѕРІС‹С€РµРЅРЅРѕР№ РєРѕРјС„РѕСЂС‚РЅРѕСЃС‚Рё", { "WiFi", "РҐРѕР»РѕРґРёР»СЊРЅРёРє", "РљРѕС„РµРјР°С€РёРЅР°" }));
+        categories.push_back(RoomCategory("Suite", "Р›СЋРєСЃ", { "WiFi", "РҐРѕР»РѕРґРёР»СЊРЅРёРє", "РљРѕС„РµРјР°С€РёРЅР°", "РњРёРЅРёР±Р°СЂ" }));
     }
 
-    // Если нет комнат - добавим примерные
+    // Р•СЃР»Рё РЅРµС‚ РєРѕРјРЅР°С‚ - РґРѕР±Р°РІРёРј РїСЂРёРјРµСЂРЅС‹Рµ
     if (rooms.empty()) {
         rooms.push_back(Room(101, categories[0].getId(), 2, true, 50));
         rooms.push_back(Room(102, categories[1].getId(), 3, true, 80));
@@ -459,11 +480,11 @@ int main() {
             saveToFile<Payment>("Payment.txt", payments);
             break;
         case 0:
-            cout << "Выход из программы..." << endl;
+            cout << "Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹..." << endl;
             saveAllData(guests, categories, rooms, employees, bookings, payments);
             break;
         default:
-            cout << "Неверный выбор. Повторите попытку." << endl;
+            cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ." << endl;
         }
     } while (choice != 0);
 
@@ -471,36 +492,36 @@ int main() {
 }
 
 void showMainMenu() {
-    cout << "\n==== Главное меню ====\n";
-    cout << "1. Гости\n";
-    cout << "2. Номера\n";
-    cout << "3. Бронирование\n";
-    cout << "4. Оплата\n";
-    cout << "0. Выход\n";
-    cout << "Выберите действие: ";
+    cout << "\n==== Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ ====\n";
+    cout << "1. Р“РѕСЃС‚Рё\n";
+    cout << "2. РќРѕРјРµСЂР°\n";
+    cout << "3. Р‘СЂРѕРЅРёСЂРѕРІР°РЅРёРµ\n";
+    cout << "4. РћРїР»Р°С‚Р°\n";
+    cout << "0. Р’С‹С…РѕРґ\n";
+    cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
 }
 
 void guestMenu(vector<Guest>& guests) {
     int choice;
     do {
-        cout << "\n==== Меню гостей ====\n";
-        cout << "1. Добавить гостя\n";
-        cout << "2. Вывести информацию о гостях\n";
-        cout << "3. Изменить контактную информацию\n";
-        cout << "0. Назад в главное меню\n";
-        cout << "Выберите действие: ";
+        cout << "\n==== РњРµРЅСЋ РіРѕСЃС‚РµР№ ====\n";
+        cout << "1. Р”РѕР±Р°РІРёС‚СЊ РіРѕСЃС‚СЏ\n";
+        cout << "2. Р’С‹РІРµСЃС‚Рё РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РіРѕСЃС‚СЏС…\n";
+        cout << "3. РР·РјРµРЅРёС‚СЊ РєРѕРЅС‚Р°РєС‚РЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ\n";
+        cout << "0. РќР°Р·Р°Рґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ\n";
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
         cin >> choice;
 
         switch (choice) {
         case 1: {
             string name, phone, email, passport;
-            cout << "Введите имя: "; cin.ignore(); getline(cin, name);
-            cout << "Введите телефон: "; getline(cin, phone);
-            cout << "Введите email: "; getline(cin, email);
-            cout << "Введите паспортные данные: "; getline(cin, passport);
+            cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ: "; cin.ignore(); getline(cin, name);
+            cout << "Р’РІРµРґРёС‚Рµ С‚РµР»РµС„РѕРЅ: "; getline(cin, phone);
+            cout << "Р’РІРµРґРёС‚Рµ email: "; getline(cin, email);
+            cout << "Р’РІРµРґРёС‚Рµ РїР°СЃРїРѕСЂС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ: "; getline(cin, passport);
             Guest g(name, phone, email, passport);
             guests.push_back(g);
-            cout << "Гость добавлен.\n";
+            cout << "Р“РѕСЃС‚СЊ РґРѕР±Р°РІР»РµРЅ.\n";
             break;
         }
         case 2: {
@@ -511,31 +532,31 @@ void guestMenu(vector<Guest>& guests) {
         }
         case 3: {
             if (guests.empty()) {
-                cout << "Список гостей пуст.\n";
+                cout << "РЎРїРёСЃРѕРє РіРѕСЃС‚РµР№ РїСѓСЃС‚.\n";
                 break;
             }
             for (const auto& g : guests) {
                 g.displayInfo();
             }
-            cout << "Введите ID для изменения: ";
+            cout << "Р’РІРµРґРёС‚Рµ ID РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ: ";
             int id; cin >> id;
             Guest* guest = findGuestById(guests, id);
             if (guest) {
                 string phone, email;
-                cout << "Введите новый телефон: "; cin.ignore(); getline(cin, phone);
-                cout << "Введите новый email: "; getline(cin, email);
+                cout << "Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ С‚РµР»РµС„РѕРЅ: "; cin.ignore(); getline(cin, phone);
+                cout << "Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ email: "; getline(cin, email);
                 guest->updateContactInfo(phone, email);
-                cout << "Контактная информация обновлена.\n";
+                cout << "РљРѕРЅС‚Р°РєС‚РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РѕР±РЅРѕРІР»РµРЅР°.\n";
             }
             else {
-                cout << "Неверный ID.\n";
+                cout << "РќРµРІРµСЂРЅС‹Р№ ID.\n";
             }
             break;
         }
         case 0:
             break;
         default:
-            cout << "Неверный выбор. Попробуйте снова.\n";
+            cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
         }
     } while (choice != 0);
 }
@@ -543,13 +564,13 @@ void guestMenu(vector<Guest>& guests) {
 void roomMenu(vector<Room>& rooms, vector<RoomCategory>& categories) {
     int choice;
     do {
-        cout << "\n==== Меню номеров ====\n";
-        cout << "1. Показать номера\n";
-        cout << "2. Изменить статус номера\n";
-        cout << "3. Категории номеров\n";
-        cout << "4. Изменить список услуг\n";
-        cout << "0. Назад в главное меню\n";
-        cout << "Выберите действие: ";
+        cout << "\n==== РњРµРЅСЋ РЅРѕРјРµСЂРѕРІ ====\n";
+        cout << "1. РџРѕРєР°Р·Р°С‚СЊ РЅРѕРјРµСЂР°\n";
+        cout << "2. РР·РјРµРЅРёС‚СЊ СЃС‚Р°С‚СѓСЃ РЅРѕРјРµСЂР°\n";
+        cout << "3. РљР°С‚РµРіРѕСЂРёРё РЅРѕРјРµСЂРѕРІ\n";
+        cout << "4. РР·РјРµРЅРёС‚СЊ СЃРїРёСЃРѕРє СѓСЃР»СѓРі\n";
+        cout << "0. РќР°Р·Р°Рґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ\n";
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
         cin >> choice;
 
         switch (choice) {
@@ -559,7 +580,7 @@ void roomMenu(vector<Room>& rooms, vector<RoomCategory>& categories) {
                 if (cat)
                     r.displayDetails(*cat);
                 else
-                    cout << "Room #: " << r.getRoomNumber() << " (Категория не найдена)" << endl;
+                    cout << "Room #: " << r.getRoomNumber() << " (РљР°С‚РµРіРѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР°)" << endl;
             }
             break;
         case 2: {
@@ -568,21 +589,21 @@ void roomMenu(vector<Room>& rooms, vector<RoomCategory>& categories) {
                 if (cat)
                     r.displayDetails(*cat);
                 else
-                    cout << "Room #: " << r.getRoomNumber() << " (Категория не найдена)" << endl;
+                    cout << "Room #: " << r.getRoomNumber() << " (РљР°С‚РµРіРѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР°)" << endl;
             }
             int number;
-            cout << "Введите номер комнаты: ";
+            cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРјРЅР°С‚С‹: ";
             cin >> number;
             Room* room = findRoomByNumber(rooms, number);
             if (room) {
-                cout << "Введите новый статус (1 - доступен, 0 - занят): ";
+                cout << "Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ СЃС‚Р°С‚СѓСЃ (1 - РґРѕСЃС‚СѓРїРµРЅ, 0 - Р·Р°РЅСЏС‚): ";
                 int avail;
                 cin >> avail;
                 room->updateStatus(avail != 0);
-                cout << "Статус обновлен.\n";
+                cout << "РЎС‚Р°С‚СѓСЃ РѕР±РЅРѕРІР»РµРЅ.\n";
             }
             else {
-                cout << "Комната не найдена.\n";
+                cout << "РљРѕРјРЅР°С‚Р° РЅРµ РЅР°Р№РґРµРЅР°.\n";
             }
             break;
         }
@@ -595,45 +616,48 @@ void roomMenu(vector<Room>& rooms, vector<RoomCategory>& categories) {
         case 0:
             break;
         default:
-            cout << "Неверный выбор. Попробуйте снова.\n";
+            cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
         }
     } while (choice != 0);
 }
 
 void categoryMenu(vector<RoomCategory>& categories) {
-    cout << "\n==== Категории номеров ====\n";
+    cout << "\n==== РљР°С‚РµРіРѕСЂРёРё РЅРѕРјРµСЂРѕРІ ====\n";
     if (categories.empty()) {
-        cout << "Нет категорий номеров.\n";
+        cout << "РќРµС‚ РєР°С‚РµРіРѕСЂРёР№ РЅРѕРјРµСЂРѕРІ.\n";
         return;
     }
     for (const auto& c : categories) {
-        cout << "ID: " << c.getId() << ", Name: " << c.getName() << ", Description: " << c.getDescription() << endl;
-        cout << "  Услуги:\n";
+        cout << "ID: " << c.getId()
+            << ", РќР°Р·РІР°РЅРёРµ: " << c.getName()
+            << ", РћРїРёСЃР°РЅРёРµ: " << c.getDescription()
+            << endl;
+        cout << "  РЈСЃР»СѓРіРё:\n";
         c.getServices();
     }
 }
 
 void editServicesMenu(vector<RoomCategory>& categories) {
     if (categories.empty()) {
-        cout << "Нет категорий для редактирования.\n";
+        cout << "РќРµС‚ РєР°С‚РµРіРѕСЂРёР№ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ.\n";
         return;
     }
-    cout << "\n==== Изменить список услуг ====\n";
-    cout << "Список категорий:\n";
+    cout << "\n==== РР·РјРµРЅРёС‚СЊ СЃРїРёСЃРѕРє СѓСЃР»СѓРі ====\n";
+    cout << "РЎРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№:\n";
     for (const auto& c : categories) {
-        cout << "ID: " << c.getId() << ", Name: " << c.getName() << endl;
+        cout << "ID: " << c.getId() << ", РќР°Р·РІР°РЅРёРµ: " << c.getName() << endl;
     }
-    cout << "Введите ID категории для изменения услуг: ";
+    cout << "Р’РІРµРґРёС‚Рµ ID РєР°С‚РµРіРѕСЂРёРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ СѓСЃР»СѓРі: ";
     int id; cin >> id;
     RoomCategory* category = findCategoryById(categories, id);
     if (!category) {
-        cout << "Неверный ID категории.\n";
+        cout << "РќРµРІРµСЂРЅС‹Р№ ID РєР°С‚РµРіРѕСЂРёРё.\n";
         return;
     }
     cin.ignore();
-    cout << "Текущие услуги:\n";
+    cout << "РўРµРєСѓС‰РёРµ СѓСЃР»СѓРіРё:\n";
     category->getServices();
-    cout << "Введите новые услуги через запятую (например: WiFi,Минибар,Завтрак): ";
+    cout << "Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Рµ СѓСЃР»СѓРіРё С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ (РЅР°РїСЂРёРјРµСЂ: WiFi,РњРёРЅРёР±Р°СЂ,Р—Р°РІС‚СЂР°Рє): ";
     string line;
     getline(cin, line);
     vector<string> newServices;
@@ -641,7 +665,7 @@ void editServicesMenu(vector<RoomCategory>& categories) {
     string token;
     while (getline(ss, token, ',')) {
         if (!token.empty()) {
-            // Уберем пробелы по краям
+            // РЈР±РµСЂРµРј РїСЂРѕР±РµР»С‹ РїРѕ РєСЂР°СЏРј
             size_t start = token.find_first_not_of(" ");
             size_t end = token.find_last_not_of(" ");
             if (start != string::npos && end != string::npos)
@@ -651,71 +675,75 @@ void editServicesMenu(vector<RoomCategory>& categories) {
         }
     }
     category->setServices(newServices);
-    cout << "Список услуг обновлен.\n";
+    cout << "РЎРїРёСЃРѕРє СѓСЃР»СѓРі РѕР±РЅРѕРІР»РµРЅ.\n";
 }
 
 void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bookings, vector<RoomCategory>& categories) {
     int choice;
     do {
-        cout << "\n==== Меню бронирования ====\n";
-        cout << "1. Создать бронирование\n";
-        cout << "2. Отменить бронирование\n";
-        cout << "0. Назад в главное меню\n";
-        cout << "Выберите действие: ";
+        cout << "\n==== РњРµРЅСЋ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ ====\n";
+        cout << "1. РЎРѕР·РґР°С‚СЊ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ\n";
+        cout << "2. РћС‚РјРµРЅРёС‚СЊ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ\n";
+        cout << "0. РќР°Р·Р°Рґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ\n";
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
         cin >> choice;
 
         switch (choice) {
         case 1: {
             string name, phone, email, passport, checkIn, checkOut;
-            cout << "Введите имя гостя: "; cin.ignore(); getline(cin, name);
-            cout << "Телефон: "; getline(cin, phone);
+            cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ РіРѕСЃС‚СЏ: "; cin.ignore(); getline(cin, name);
+            cout << "РўРµР»РµС„РѕРЅ: "; getline(cin, phone);
             cout << "Email: "; getline(cin, email);
-            cout << "Паспортные данные: "; getline(cin, passport);
+            cout << "РџР°СЃРїРѕСЂС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ: "; getline(cin, passport);
             Guest g(name, phone, email, passport);
             guests.push_back(g);
 
             if (rooms.empty()) {
-                cout << "Нет доступных комнат.\n";
+                cout << "РќРµС‚ РґРѕСЃС‚СѓРїРЅС‹С… РєРѕРјРЅР°С‚.\n";
                 break;
             }
-            cout << "Доступные номера:\n";
+            cout << "Р”РѕСЃС‚СѓРїРЅС‹Рµ РЅРѕРјРµСЂР°:\n";
             for (const auto& r : rooms) {
                 if (r.getAvailability()) {
                     RoomCategory* cat = findCategoryById(categories, r.getCategoryId());
                     if (cat)
                         r.displayDetails(*cat);
                     else
-                        cout << "Room #: " << r.getRoomNumber() << " (Категория не найдена)" << endl;
+                        cout << "Room #: " << r.getRoomNumber() << " (РљР°С‚РµРіРѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР°)" << endl;
                 }
             }
             int number;
-            cout << "Выберите номер комнаты: "; cin >> number;
+            cout << "Р’С‹Р±РµСЂРёС‚Рµ РЅРѕРјРµСЂ РєРѕРјРЅР°С‚С‹: "; cin >> number;
             Room* selectedRoom = findRoomByNumber(rooms, number);
             if (!selectedRoom || !selectedRoom->getAvailability()) {
-                cout << "Комната недоступна.\n";
+                cout << "РљРѕРјРЅР°С‚Р° РЅРµРґРѕСЃС‚СѓРїРЅР°.\n";
                 break;
             }
-            cout << "Дата въезда: "; cin.ignore(); getline(cin, checkIn);
-            cout << "Дата выезда: "; getline(cin, checkOut);
+            cout << "Р”Р°С‚Р° РІСЉРµР·РґР°: "; cin.ignore(); getline(cin, checkIn);
+            cout << "Р”Р°С‚Р° РІС‹РµР·РґР°: "; getline(cin, checkOut);
             Booking b(g, *selectedRoom, checkIn, checkOut);
             b.confirmBooking();
             selectedRoom->updateStatus(false);
             bookings.push_back(b);
-            cout << "Бронирование создано.\n";
+            cout << "Р‘СЂРѕРЅРёСЂРѕРІР°РЅРёРµ СЃРѕР·РґР°РЅРѕ.\n";
             break;
         }
         case 2: {
             if (bookings.empty()) {
-                cout << "Бронирований нет.\n";
+                cout << "Р‘СЂРѕРЅРёСЂРѕРІР°РЅРёР№ РЅРµС‚.\n";
                 break;
             }
             for (const auto& b : bookings) {
                 Guest* guest = findGuestById(guests, b.getGuestId());
                 Room* room = findRoomByNumber(rooms, b.getRoomNumber());
-                if (guest && room)
+                if (guest && room) {
                     b.display(*guest, *room);
+                }
+                else {
+                    cout << "РћС€РёР±РєР°: РЅРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё РіРѕСЃС‚СЏ РёР»Рё РєРѕРјРЅР°С‚Сѓ РґР»СЏ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ ID: " << b.getID() << endl;
+                }
             }
-            cout << "Выберите ID для отмены: ";
+            cout << "Р’С‹Р±РµСЂРёС‚Рµ ID РґР»СЏ РѕС‚РјРµРЅС‹: ";
             int id; cin >> id;
             Booking* booking = findBookingById(bookings, id);
             if (booking) {
@@ -723,17 +751,17 @@ void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bo
                 Room* room = findRoomByNumber(rooms, booking->getRoomNumber());
                 if (room)
                     room->updateStatus(true);
-                cout << "Бронирование отменено.\n";
+                cout << "Р‘СЂРѕРЅРёСЂРѕРІР°РЅРёРµ РѕС‚РјРµРЅРµРЅРѕ.\n";
             }
             else {
-                cout << "Неверный ID.\n";
+                cout << "РќРµРІРµСЂРЅС‹Р№ ID.\n";
             }
             break;
         }
         case 0:
             break;
         default:
-            cout << "Неверный выбор. Попробуйте снова.\n";
+            cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
         }
     } while (choice != 0);
 }
@@ -741,49 +769,67 @@ void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bo
 void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
     int choice;
     do {
-        cout << "\n==== Меню оплаты ====\n";
-        cout << "1. Провести оплату\n";
-        cout << "2. Показать квитанции об оплате\n";
-        cout << "0. Назад в главное меню\n";
-        cout << "Выберите действие: ";
+        cout << "\n==== РњРµРЅСЋ РѕРїР»Р°С‚С‹ ====\n";
+        cout << "1. РџСЂРѕРІРµСЃС‚Рё РѕРїР»Р°С‚Сѓ\n";
+        cout << "2. РџРѕРєР°Р·Р°С‚СЊ РєРІРёС‚Р°РЅС†РёРё РѕР± РѕРїР»Р°С‚Рµ\n";
+        cout << "0. РќР°Р·Р°Рґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ\n";
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
         cin >> choice;
 
         switch (choice) {
         case 1: {
-            if (bookings.empty()) {
-                cout << "Нет бронирований для оплаты.\n";
-                break;
-            }
+            bool activeBookingExists = false;
             for (const auto& b : bookings) {
-                if (b.getStatus() == "active") {
-                    cout << "ID: " << b.getID() << ", Room #: " << b.getRoomNumber() << endl;
+                // РџСЂРѕРІРµСЂРєР° РЅР° СЃС‚Р°С‚СѓСЃ, СЃС‡РёС‚Р°РµРј С‡С‚Рѕ СЃС‚Р°С‚СѓСЃ "cancelled" Р»РёР±Рѕ "Р—Р°РІРµСЂС€РµРЅРѕ"
+                if (b.getStatus() != "РћС‚РјРµРЅРµРЅРѕ" && b.getStatus() != "Р—Р°РІРµСЂС€РµРЅРѕ") {
+                    activeBookingExists = true;
+                    break;
                 }
             }
-            cout << "Выберите ID бронирования: ";
+            if (!activeBookingExists) {
+                cout << "РќРµС‚ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёР№ РґР»СЏ РѕРїР»Р°С‚С‹.\n";
+                break;
+            }
+
+            // Р’С‹РІРѕРґ Р°РєС‚РёРІРЅС‹С… Р±СЂРѕРЅРёСЂРѕРІР°РЅРёР№
+            for (const auto& b : bookings) {
+                if (b.getStatus() == "РђРєС‚РёРІРЅРѕ") {
+                    cout << "ID: " << b.getID() << ", РќРѕРјРµСЂ #: " << b.getRoomNumber() << endl;
+                }
+            }
+
+            cout << "Р’С‹Р±РµСЂРёС‚Рµ ID Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ: ";
             int id; cin >> id;
             Booking* booking = findBookingById(bookings, id);
-            if (booking && booking->getStatus() == "active") {
-                double price = 0;
-                // Для расчета стоимости можно доработать если нужно
-                cout << "Введите сумму оплаты: ";
+
+            if (booking && booking->getStatus() == "РђРєС‚РёРІРЅРѕ") {
+                double price = 0; // Р—РґРµСЃСЊ РјРѕР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ Р»РѕРіРёРєСѓ РґР»СЏ СЂР°СЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё
+                cout << "Р’РІРµРґРёС‚Рµ СЃСѓРјРјСѓ РѕРїР»Р°С‚С‹: ";
                 double amount; cin >> amount;
                 cin.ignore();
                 string method, date;
-                cout << "Введите способ оплаты: "; getline(cin, method);
-                cout << "Введите дату оплаты: "; getline(cin, date);
+                cout << "Р’РІРµРґРёС‚Рµ СЃРїРѕСЃРѕР± РѕРїР»Р°С‚С‹: "; getline(cin, method);
+                cout << "Р’РІРµРґРёС‚Рµ РґР°С‚Сѓ РѕРїР»Р°С‚С‹: "; getline(cin, date);
+
                 Payment p(*booking, amount, method, date);
                 p.processPayment();
                 payments.push_back(p);
-                cout << "Оплата проведена.\n";
+
+                // РР·РјРµРЅРµРЅРёРµ СЃС‚Р°С‚СѓСЃР° Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ РЅР° "Р—Р°РІРµСЂС€РµРЅРѕ"
+                booking->cancelBooking(); // РЎРЅР°С‡Р°Р»Р° РѕС‚РјРµРЅСЏРµРј, РµСЃР»Рё СЌС‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ
+                booking->confirmBooking(); // РџРѕРґС‚РІРµСЂР¶РґР°РµРј, С‡С‚РѕР±С‹ СЃС‚Р°С‚СѓСЃ СЃС‚Р°Р» "РђРєС‚РёРІРЅРѕ"
+                booking->completBooking(); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃС‚Р°С‚СѓСЃ "Р—Р°РІРµСЂС€РµРЅРѕ"
+
+                cout << "РћРїР»Р°С‚Р° РїСЂРѕРІРµРґРµРЅР°. РЎС‚Р°С‚СѓСЃ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ РёР·РјРµРЅРµРЅ РЅР° 'Р—Р°РІРµСЂС€РµРЅРѕ'.\n";
             }
             else {
-                cout << "Неверный ID или бронирование не активно.\n";
+                cout << "РќРµРІРµСЂРЅС‹Р№ ID РёР»Рё Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ РЅРµ Р°РєС‚РёРІРЅРѕ.\n";
             }
             break;
         }
         case 2: {
             if (payments.empty()) {
-                cout << "Квитанций нет.\n";
+                cout << "РљРІРёС‚Р°РЅС†РёР№ РЅРµС‚.\n";
                 break;
             }
             for (const auto& p : payments) {
@@ -794,7 +840,7 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
         case 0:
             break;
         default:
-            cout << "Неверный выбор. Попробуйте снова.\n";
+            cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
         }
     } while (choice != 0);
 }
