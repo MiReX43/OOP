@@ -5,6 +5,7 @@
 #include <limits>
 #include <iomanip>
 #include <sstream>
+#include <memory> // Для использования умных указателей
 
 using namespace std;
 
@@ -13,35 +14,42 @@ int bookingCounter = 1;
 int paymentCounter = 1;
 int employeeCounter = 1;
 
-// ---------------- Класс Guest ----------------
-class Guest {
+// ---------------- Абстрактный класс Person ----------------
+class Person {
+protected:
     int id;
     string name;
     string phone;
     string email;
-    string passportData;
-public:
-    Guest() : id(0) {}
-    Guest(int i, string name, string phone, string email, string passportData) :
-        id(i), name(name), phone(phone), email(email), passportData(passportData) {
-        if (i >= guestCounter) guestCounter = i + 1;
-    }
 
-    Guest(string name, string phone, string email, string passportData) :
-        id(guestCounter++), name(name), phone(phone), email(email), passportData(passportData) {}
+public:
+    Person(int id, string name, string phone, string email)
+        : id(id), name(name), phone(phone), email(email) {}
+
+    virtual void displayInfo() const = 0; // Чисто виртуальный метод
 
     int getId() const { return id; }
     string getName() const { return name; }
     string getPhone() const { return phone; }
     string getEmail() const { return email; }
-    string getPassport() const { return passportData; }
+};
+
+// ---------------- Класс Guest ----------------
+class Guest : public Person {
+    string passportData;
+
+public:
+    Guest(int i, string name, string phone, string email, string passportData)
+        : Person(i, name, phone, email), passportData(passportData) {
+        if (i >= guestCounter) guestCounter = i + 1;
+    }
 
     void updateContactInfo(string newPhone, string newEmail) {
         phone = newPhone;
         email = newEmail;
     }
 
-    void displayInfo() const {
+    void displayInfo() const override {
         cout << "ID: " << id
             << ", ФИО: " << name
             << ", Телефон: " << phone
@@ -50,7 +58,6 @@ public:
     }
 
     string toString() const {
-        // Формат: id,name,phone,email,passportData
         return to_string(id) + "," + name + "," + phone + "," + email + "," + passportData;
     }
 
@@ -69,24 +76,20 @@ public:
 
 // ---------------- Класс RoomCategory ----------------
 class RoomCategory {
+    private:
     int id;
     string name;
     string description;
     vector<string> services;
+
 public:
-    RoomCategory() : id(0) {}
     RoomCategory(int i, string name, string description, vector<string> services)
         : id(i), name(name), description(description), services(services) {
         if (i >= categoryCounter) categoryCounter = i + 1;
     }
 
-    RoomCategory(string name, string description, vector<string> services)
-        : id(categoryCounter++), name(name), description(description), services(services) {}
-
     int getId() const { return id; }
-
     string getName() const { return name; }
-
     string getDescription() const { return description; }
 
     void getServices() const {
@@ -105,7 +108,6 @@ public:
     }
 
     string toString() const {
-        // Формат: id,name,description,service1;service2;service3...
         string result = to_string(id) + "," + name + "," + description + ",";
         for (size_t i = 0; i < services.size(); ++i) {
             result += services[i];
@@ -138,13 +140,14 @@ int RoomCategory::categoryCounter = 1;
 
 // ---------------- Класс Room ----------------
 class Room {
+    private:
     int roomNumber;
     int categoryId;
     int capacity;
     bool isAvailable;
     double pricePerNight;
+
 public:
-    Room() : roomNumber(0), categoryId(0), capacity(0), isAvailable(true), pricePerNight(0) {}
     Room(int number, int catId, int cap, bool avail, double price)
         : roomNumber(number), categoryId(catId), capacity(cap), isAvailable(avail), pricePerNight(price) {
         if (number >= roomCounter) roomCounter = number + 1;
@@ -166,7 +169,6 @@ public:
     }
 
     string toString() const {
-        // Формат: roomNumber,categoryId,capacity,isAvailable,price
         return to_string(roomNumber) + "," + to_string(categoryId) + "," + to_string(capacity)
             + "," + (isAvailable ? "1" : "0") + "," + to_string(pricePerNight);
     }
@@ -192,48 +194,47 @@ public:
 int Room::roomCounter = 1;
 
 // ---------------- Класс Employee ----------------
-class Employee {
-    int employeeID;
-    string name;
+class Employee : public Person {
     string position;
+
 public:
-    Employee() : employeeID(0) {}
-    Employee(int id, string name, string pos) : employeeID(id), name(name), position(pos) {
+    Employee(int id, string name, string phone, string email, string pos)
+        : Person(id, name, phone, email), position(pos) {
         if (id >= employeeCounter) employeeCounter = id + 1;
     }
 
-    void displayInfo() const {
-        cout << "ID Сотрудника: " << employeeID
-            << ", Name: " << name
-            << ", Position: " << position
-            << endl;
+    void displayInfo() const override {
+        cout << "Имя: " << name << ", Должность: " << position << endl;
     }
 
     string toString() const {
-        return to_string(employeeID) + "," + name + "," + position;
+        return to_string(id) + "," + name + "," + phone + "," + email + "," + position;
     }
 
     static Employee fromString(const string& line) {
         stringstream ss(line);
-        string idStr, name, pos;
+        string idStr, name, phone, email, pos;
         getline(ss, idStr, ',');
         getline(ss, name, ',');
+        getline(ss, phone, ',');
+        getline(ss, email, ',');
         getline(ss, pos, ',');
         int id = stoi(idStr);
-        return Employee(id, name, pos);
+        return Employee(id, name, phone, email, pos);
     }
 };
 
 // ---------------- Класс Booking ----------------
 class Booking {
+    private:   
     int bookingID;
     int guestId;
     int roomNumber;
     string checkInDate;
     string checkOutDate;
-    string status; // active/cancelled/completed
+    string status;
+
 public:
-    Booking() : bookingID(0), guestId(0), roomNumber(0), status("Активно") {}
     Booking(int id, int gid, int rn, string in, string out, string st)
         : bookingID(id), guestId(gid), roomNumber(rn), checkInDate(in), checkOutDate(out), status(st) {
         if (id >= bookingCounter) bookingCounter = id + 1;
@@ -253,7 +254,7 @@ public:
     void completBooking() { status = "Завершено"; }
 
     double calculateCost(double pricePerNight) const {
-        return 3.0 * pricePerNight; // Пример: фиксированное количество ночей
+        return 3.0 * pricePerNight; // фиксированное количество ночей
     }
 
     void display(const Guest& guest, const Room& room) const {
@@ -267,7 +268,6 @@ public:
     }
 
     string toString() const {
-        // Формат: bookingID,guestId,roomNumber,checkInDate,checkOutDate,status
         return to_string(bookingID) + "," + to_string(guestId) + "," + to_string(roomNumber) + "," + checkInDate + "," + checkOutDate + "," + status;
     }
 
@@ -289,13 +289,14 @@ public:
 
 // ---------------- Класс Payment ----------------
 class Payment {
+    private:
     int paymentID;
     int bookingID;
     double amount;
     string paymentDate;
     string paymentMethod;
+
 public:
-    Payment() : paymentID(0), bookingID(0), amount(0) {}
     Payment(int pid, int bid, double amt, string method, string date)
         : paymentID(pid), bookingID(bid), amount(amt), paymentMethod(method), paymentDate(date) {
         if (pid >= paymentCounter) paymentCounter = pid + 1;
@@ -309,9 +310,8 @@ public:
     }
 
     void printReceipt() const {
-        cout
-            << "ID Квитанции: " << paymentID
-            << ", ID бронировния: " << bookingID
+        cout << "ID Квитанции: " << paymentID
+            << ", ID бронирования: " << bookingID
             << ", Сумма: $" << amount
             << ", Дата: " << paymentDate
             << ", Способ оплаты: " << paymentMethod
@@ -319,7 +319,6 @@ public:
     }
 
     string toString() const {
-        // Формат: paymentID,bookingID,amount,paymentMethod,paymentDate
         return to_string(paymentID) + "," + to_string(bookingID) + "," + to_string(amount) + "," + paymentMethod + "," + paymentDate;
     }
 
@@ -370,6 +369,7 @@ void categoryMenu(vector<RoomCategory>& categories);
 void editServicesMenu(vector<RoomCategory>& categories);
 void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bookings, vector<RoomCategory>& categories);
 void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments);
+void employeeMenu(vector<Employee>& employees);
 RoomCategory* findCategoryById(vector<RoomCategory>& categories, int id);
 Room* findRoomByNumber(vector<Room>& rooms, int number);
 Guest* findGuestById(vector<Guest>& guests, int id);
@@ -444,9 +444,13 @@ int main() {
 
     // Если нет категорий - инициализируем примером (чтобы было что редактировать)
     if (categories.empty()) {
-        categories.push_back(RoomCategory("Standard", "Стандартный номер", { "WiFi", "Холодильник" }));
-        categories.push_back(RoomCategory("Deluxe", "Номер повышенной комфортности", { "WiFi", "Холодильник", "Кофемашина" }));
-        categories.push_back(RoomCategory("Suite", "Люкс", { "WiFi", "Холодильник", "Кофемашина", "Минибар" }));
+        categories.push_back(RoomCategory(1, "Standard", "Стандартный номер", { "WiFi", "Холодильник" }));
+        categories.push_back(RoomCategory(2, "Deluxe", "Номер повышенной комфортности", { "WiFi", "Холодильник", "Кофемашина" }));
+        categories.push_back(RoomCategory(3, "Suite", "Люкс", { "WiFi", "Холодильник", "Кофемашина", "Минибар" }));
+    }
+
+    if (employees.empty()) {
+        employees.push_back(Employee(1, "Гиревой Д.И", "1234567890", "manager@example.com", "Менеджер"));
     }
 
     // Если нет комнат - добавим примерные
@@ -479,6 +483,10 @@ int main() {
             paymentMenu(bookings, payments);
             saveToFile<Payment>("Payment.txt", payments);
             break;
+        case 5:
+            employeeMenu(employees);
+            saveToFile<Employee>("Employee.txt", employees);
+            break;
         case 0:
             cout << "Выход из программы..." << endl;
             saveAllData(guests, categories, rooms, employees, bookings, payments);
@@ -497,6 +505,7 @@ void showMainMenu() {
     cout << "2. Номера\n";
     cout << "3. Бронирование\n";
     cout << "4. Оплата\n";
+    cout << "5. Сотрудники\n";
     cout << "0. Выход\n";
     cout << "Выберите действие: ";
 }
@@ -519,7 +528,7 @@ void guestMenu(vector<Guest>& guests) {
             cout << "Введите телефон: "; getline(cin, phone);
             cout << "Введите email: "; getline(cin, email);
             cout << "Введите паспортные данные: "; getline(cin, passport);
-            Guest g(name, phone, email, passport);
+            Guest g(guestCounter++, name, phone, email, passport);
             guests.push_back(g);
             cout << "Гость добавлен.\n";
             break;
@@ -665,7 +674,6 @@ void editServicesMenu(vector<RoomCategory>& categories) {
     string token;
     while (getline(ss, token, ',')) {
         if (!token.empty()) {
-            // Уберем пробелы по краям
             size_t start = token.find_first_not_of(" ");
             size_t end = token.find_last_not_of(" ");
             if (start != string::npos && end != string::npos)
@@ -695,7 +703,7 @@ void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bo
             cout << "Телефон: "; getline(cin, phone);
             cout << "Email: "; getline(cin, email);
             cout << "Паспортные данные: "; getline(cin, passport);
-            Guest g(name, phone, email, passport);
+            Guest g(guestCounter++, name, phone, email, passport);
             guests.push_back(g);
 
             if (rooms.empty()) {
@@ -780,7 +788,6 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
         case 1: {
             bool activeBookingExists = false;
             for (const auto& b : bookings) {
-                // Проверка на статус, считаем что статус "cancelled" либо "Завершено"
                 if (b.getStatus() != "Отменено" && b.getStatus() != "Завершено") {
                     activeBookingExists = true;
                     break;
@@ -791,7 +798,6 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
                 break;
             }
 
-            // Вывод активных бронирований
             for (const auto& b : bookings) {
                 if (b.getStatus() == "Активно") {
                     cout << "ID: " << b.getID() << ", Номер #: " << b.getRoomNumber() << endl;
@@ -815,11 +821,7 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
                 p.processPayment();
                 payments.push_back(p);
 
-                // Изменение статуса бронирования на "Завершено"
-                booking->cancelBooking(); // Сначала отменяем, если это необходимо
-                booking->confirmBooking(); // Подтверждаем, чтобы статус стал "Активно"
                 booking->completBooking(); // Устанавливаем статус "Завершено"
-
                 cout << "Оплата проведена. Статус бронирования изменен на 'Завершено'.\n";
             }
             else {
@@ -843,4 +845,17 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
             cout << "Неверный выбор. Попробуйте снова.\n";
         }
     } while (choice != 0);
+}
+
+void employeeMenu(vector<Employee>& employees) {
+
+            if (employees.empty()) {
+                cout << "Список сотрудников пуст.\n";
+            }
+            else {
+                for (const auto& e : employees) {
+                    e.displayInfo();
+                }
+            }
+            cout << "Неверный выбор. Попробуйте снова.\n";
 }
