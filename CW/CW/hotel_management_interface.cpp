@@ -5,7 +5,7 @@
 #include <limits>
 #include <iomanip>
 #include <sstream>
-#include <memory> // Для использования умных указателей
+#include <memory>
 
 using namespace std;
 
@@ -76,7 +76,6 @@ public:
 
 // ---------------- Класс RoomCategory ----------------
 class RoomCategory {
-    private:
     int id;
     string name;
     string description;
@@ -140,7 +139,6 @@ int RoomCategory::categoryCounter = 1;
 
 // ---------------- Класс Room ----------------
 class Room {
-    private:
     int roomNumber;
     int categoryId;
     int capacity;
@@ -226,7 +224,6 @@ public:
 
 // ---------------- Класс Booking ----------------
 class Booking {
-    private:   
     int bookingID;
     int guestId;
     int roomNumber;
@@ -289,7 +286,6 @@ public:
 
 // ---------------- Класс Payment ----------------
 class Payment {
-    private:
     int paymentID;
     int bookingID;
     double amount;
@@ -432,6 +428,7 @@ Booking* findBookingById(vector<Booking>& bookings, int id) {
 }
 
 int main() {
+    system("chcp 65001");
     setlocale(LC_ALL, "Russian");
     vector<Guest> guests;
     vector<RoomCategory> categories;
@@ -849,13 +846,13 @@ void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments) {
 
 void employeeMenu(vector<Employee>& employees) {
 
-            if (employees.empty()) {
-                cout << "Список сотрудников пуст.\n";
-            }
-            else {
-                for (const auto& e : employees) {
-                    e.displayInfo();
-                }
-            }
-            cout << "Неверный выбор. Попробуйте снова.\n";
+    if (employees.empty()) {
+        cout << "Список сотрудников пуст.\n";
+    }
+    else {
+        for (const auto& e : employees) {
+            e.displayInfo();
+        }
+    }
+    cout << "Неверный выбор. Попробуйте снова.\n";
 }
