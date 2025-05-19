@@ -1,10 +1,10 @@
 #include "Utils.h"
 #include "FileManager.h" // Для saveToFile, loadFromFile
 
-
+using namespace std;
 // --- Реализация функций поиска ---
 
-RoomCategory* findCategoryById(std::vector<RoomCategory>& categories, int id) {
+RoomCategory* findCategoryById(vector<RoomCategory>& categories, int id) {
     for (auto& cat : categories) {
         if (cat.getId() == id)
             return &cat;
@@ -12,7 +12,7 @@ RoomCategory* findCategoryById(std::vector<RoomCategory>& categories, int id) {
     return nullptr;
 }
 
-Room* findRoomByNumber(std::vector<Room>& rooms, int number) {
+Room* findRoomByNumber(vector<Room>& rooms, int number) {
     for (auto& r : rooms) {
         if (r.getRoomNumber() == number)
             return &r;
@@ -20,7 +20,7 @@ Room* findRoomByNumber(std::vector<Room>& rooms, int number) {
     return nullptr;
 }
 
-Guest* findGuestById(std::vector<Guest>& guests, int id) {
+Guest* findGuestById(vector<Guest>& guests, int id) {
     for (auto& g : guests) {
         if (g.getId() == id)
             return &g;
@@ -28,7 +28,7 @@ Guest* findGuestById(std::vector<Guest>& guests, int id) {
     return nullptr;
 }
 
-Booking* findBookingById(std::vector<Booking>& bookings, int id) {
+Booking* findBookingById(vector<Booking>& bookings, int id) {
     for (auto& b : bookings) {
         if (b.getID() == id)
             return &b;
@@ -39,12 +39,12 @@ Booking* findBookingById(std::vector<Booking>& bookings, int id) {
 // --- Реализация функций загрузки/сохранения всех данных ---
 
 void loadAllData(
-    std::vector<Guest>& guests,
-    std::vector<RoomCategory>& categories,
-    std::vector<Room>& rooms,
-    std::vector<Employee>& employees,
-    std::vector<Booking>& bookings,
-    std::vector<Payment>& payments) {
+    vector<Guest>& guests,
+    vector<RoomCategory>& categories,
+    vector<Room>& rooms,
+    vector<Employee>& employees,
+    vector<Booking>& bookings,
+    vector<Payment>& payments) {
 
     loadFromFile<Guest>("Guest.txt", guests);
     // После загрузки гостей, обновить счетчик, если он используется для генерации новых ID
@@ -104,12 +104,12 @@ void loadAllData(
 }
 
 void saveAllData(
-    const std::vector<Guest>& guests,
-    const std::vector<RoomCategory>& categories,
-    const std::vector<Room>& rooms,
-    const std::vector<Employee>& employees,
-    const std::vector<Booking>& bookings,
-    const std::vector<Payment>& payments) {
+    const vector<Guest>& guests,
+    const vector<RoomCategory>& categories,
+    const vector<Room>& rooms,
+    const vector<Employee>& employees,
+    const vector<Booking>& bookings,
+    const vector<Payment>& payments) {
 
     saveToFile<Guest>("Guest.txt", guests);
     saveToFile<RoomCategory>("RoomCategory.txt", categories);

@@ -10,15 +10,16 @@
 #include "Payment.h"
 #include "Employee.h"
 
+using namespace std;
 
 // Объявления функций меню
 void showMainMenu();
-void guestMenu(std::vector<Guest>& guests);
-void roomMenu(std::vector<Room>& rooms, std::vector<RoomCategory>& categories);
-void categorySubMenu(std::vector<RoomCategory>& categories); // Переименовано из categoryMenu
-void editServicesMenu(std::vector<RoomCategory>& categories);
-void bookingMenu(std::vector<Guest>& guests, std::vector<Room>& rooms, std::vector<Booking>& bookings, std::vector<RoomCategory>& categories);
-void paymentMenu(std::vector<Booking>& bookings, std::vector<Payment>& payments, const std::vector<Room>& rooms); // Добавили rooms для расчета стоимости
-void employeeMenu(std::vector<Employee>& employees);
+void guestMenu(vector<Guest>& guests);
+void roomMenu(vector<Room>& rooms, vector<RoomCategory>& categories);
+void categorySubMenu(vector<RoomCategory>& categories); // Переименовано из categoryMenu
+void editServicesMenu(vector<RoomCategory>& categories);
+void bookingMenu(vector<Guest>& guests, vector<Room>& rooms, vector<Booking>& bookings, vector<RoomCategory>& categories);
+void paymentMenu(vector<Booking>& bookings, vector<Payment>& payments, const vector<Room>& rooms); // Добавили rooms для расчета стоимости
+void employeeMenu(vector<Employee>& employees);
 
 #endif // MENU_H

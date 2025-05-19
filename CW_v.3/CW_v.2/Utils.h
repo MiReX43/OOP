@@ -9,31 +9,31 @@
 #include "Booking.h"
 #include "Payment.h"
 
-
+using namespace std;
 // Объявления функций поиска
-RoomCategory* findCategoryById(std::vector<RoomCategory>& categories, int id);
-Room* findRoomByNumber(std::vector<Room>& rooms, int number);
-Guest* findGuestById(std::vector<Guest>& guests, int id);
-Booking* findBookingById(std::vector<Booking>& bookings, int id);
-// Employee* findEmployeeById(std::vector<Employee>& employees, int id); // Если понадобится
+RoomCategory* findCategoryById(vector<RoomCategory>& categories, int id);
+Room* findRoomByNumber(vector<Room>& rooms, int number);
+Guest* findGuestById(vector<Guest>& guests, int id);
+Booking* findBookingById(vector<Booking>& bookings, int id);
+// Employee* findEmployeeById(vector<Employee>& employees, int id); // Если понадобится
 
 // Объявления функций загрузки/сохранения всех данных
 void loadAllData(
-    std::vector<Guest>& guests,
-    std::vector<RoomCategory>& categories,
-    std::vector<Room>& rooms,
-    std::vector<Employee>& employees,
-    std::vector<Booking>& bookings,
-    std::vector<Payment>& payments
+    vector<Guest>& guests,
+    vector<RoomCategory>& categories,
+    vector<Room>& rooms,
+    vector<Employee>& employees,
+    vector<Booking>& bookings,
+    vector<Payment>& payments
 );
 
 void saveAllData(
-    const std::vector<Guest>& guests,
-    const std::vector<RoomCategory>& categories,
-    const std::vector<Room>& rooms,
-    const std::vector<Employee>& employees,
-    const std::vector<Booking>& bookings,
-    const std::vector<Payment>& payments
+    const vector<Guest>& guests,
+    const vector<RoomCategory>& categories,
+    const vector<Room>& rooms,
+    const vector<Employee>& employees,
+    const vector<Booking>& bookings,
+    const vector<Payment>& payments
 );
 
 #endif // UTILS_H

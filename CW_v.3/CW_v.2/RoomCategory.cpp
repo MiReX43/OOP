@@ -1,38 +1,38 @@
 #include "RoomCategory.h"
 
-
+using namespace std;
 int RoomCategory::categoryCounter = 1; // Инициализация
 
-RoomCategory::RoomCategory(int i, std::string name, std::string description, std::vector<std::string> services)
-    : id(i), name(std::move(name)), description(std::move(description)), services(std::move(services)) {
+RoomCategory::RoomCategory(int i, string name, string description, vector<string> services)
+    : id(i), name(move(name)), description(move(description)), services(move(services)) {
     if (i >= categoryCounter) categoryCounter = i + 1;
 }
 
 int RoomCategory::getId() const { return id; }
-std::string RoomCategory::getName() const { return name; }
-std::string RoomCategory::getDescription() const { return description; }
+string RoomCategory::getName() const { return name; }
+string RoomCategory::getDescription() const { return description; }
 
-const std::vector<std::string>& RoomCategory::getServicesList() const {
+const vector<string>& RoomCategory::getServicesList() const {
     return services;
 }
 
 void RoomCategory::printServices() const {
     if (services.empty()) {
-        std::cout << "  (нет услуг)" << std::endl;
+        cout << "  (нет услуг)" << endl;
     }
     else {
         for (size_t i = 0; i < services.size(); ++i) {
-            std::cout << "  " << (i + 1) << ". " << services[i] << std::endl;
+            cout << "  " << (i + 1) << ". " << services[i] << endl;
         }
     }
 }
 
-void RoomCategory::setServices(const std::vector<std::string>& newServices) {
+void RoomCategory::setServices(const vector<string>& newServices) {
     services = newServices;
 }
 
-std::string RoomCategory::toString() const {
-    std::string result = std::to_string(id) + "," + name + "," + description + ",";
+string RoomCategory::toString() const {
+    string result = to_string(id) + "," + name + "," + description + ",";
     for (size_t i = 0; i < services.size(); ++i) {
         result += services[i];
         if (i != services.size() - 1)
@@ -41,21 +41,21 @@ std::string RoomCategory::toString() const {
     return result;
 }
 
-RoomCategory RoomCategory::fromString(const std::string& line) {
-    std::stringstream ss(line);
-    std::string idStr, name, description, servicesStr;
-    std::getline(ss, idStr, ',');
-    std::getline(ss, name, ',');
-    std::getline(ss, description, ',');
-    std::getline(ss, servicesStr); // Остаток строки - это сервисы
+RoomCategory RoomCategory::fromString(const string& line) {
+    stringstream ss(line);
+    string idStr, name, description, servicesStr;
+    getline(ss, idStr, ',');
+    getline(ss, name, ',');
+    getline(ss, description, ',');
+    getline(ss, servicesStr); // Остаток строки - это сервисы
 
     int id = 0;
-    if (!idStr.empty()) id = std::stoi(idStr);
+    if (!idStr.empty()) id = stoi(idStr);
 
-    std::vector<std::string> servs;
-    std::stringstream servStream(servicesStr);
-    std::string service;
-    while (std::getline(servStream, service, ';')) {
+    vector<string> servs;
+    stringstream servStream(servicesStr);
+    string service;
+    while (getline(servStream, service, ';')) {
         if (!service.empty()) servs.push_back(service);
     }
     return RoomCategory(id, name, description, servs);

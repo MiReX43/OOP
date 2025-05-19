@@ -2,10 +2,10 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <limits>    // Для std::numeric_limits
-#include <iomanip>   // Для std::fixed, std::setprecision
+#include <limits>    // Для numeric_limits
+#include <iomanip>   // Для fixed, setprecision
 #include <sstream>
-#include <memory>    // Для std::unique_ptr, если бы использовался
+#include <memory>    // Для unique_ptr, если бы использовался
 #include <windows.h> // Для SetConsoleCP, SetConsoleOutputCP
 
 #include "Guest.h"
@@ -18,16 +18,18 @@
 #include "Utils.h"
 #include "Menu.h"
 
+using namespace std;
+
 // Вспомогательная функция для безопасного ввода числа из main, если нужна здесь
 int getMainIntInput() {
     int choice;
-    while (!(std::cin >> choice)) {
-        std::cout << "Неверный ввод. Пожалуйста, введите число: ";
-        std::cin.clear();
-        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+    while (!(cin >> choice)) {
+        cout << "Неверный ввод. Пожалуйста, введите число: ";
+        cin.clear();
+        cin.ignore((numeric_limits<streamsize>::max)(), '\n');
     }
     // Не очищаем буфер здесь, если сразу после этого не будет getline
-    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
     return choice;
 }
 
@@ -35,22 +37,22 @@ int getMainIntInput() {
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    std::cout << std::fixed << std::setprecision(2); // Глобальная настройка для вывода double
+    cout << fixed << setprecision(2); // Глобальная настройка для вывода double
 
-    std::vector<Guest> guests;
-    std::vector<RoomCategory> categories;
-    std::vector<Room> rooms;
-    std::vector<Employee> employees;
-    std::vector<Booking> bookings;
-    std::vector<Payment> payments;
+    vector<Guest> guests;
+    vector<RoomCategory> categories;
+    vector<Room> rooms;
+    vector<Employee> employees;
+    vector<Booking> bookings;
+    vector<Payment> payments;
 
     loadAllData(guests, categories, rooms, employees, bookings, payments);
 
     // Инициализация тестовых данных, если файлы пусты (для первого запуска)
     if (categories.empty()) {
-        categories.emplace_back(RoomCategory::categoryCounter++, "Standard", "Стандартный номер", std::vector<std::string>{"WiFi", "Холодильник"});
-        categories.emplace_back(RoomCategory::categoryCounter++, "Deluxe", "Номер повышенной комфортности", std::vector<std::string>{"WiFi", "Холодильник", "Кофемашина"});
-        categories.emplace_back(RoomCategory::categoryCounter++, "Suite", "Люкс", std::vector<std::string>{"WiFi", "Холодильник", "Кофемашина", "Минибар"});
+        categories.emplace_back(RoomCategory::categoryCounter++, "Standard", "Стандартный номер", vector<string>{"WiFi", "Холодильник"});
+        categories.emplace_back(RoomCategory::categoryCounter++, "Deluxe", "Номер повышенной комфортности", vector<string>{"WiFi", "Холодильник", "Кофемашина"});
+        categories.emplace_back(RoomCategory::categoryCounter++, "Suite", "Люкс", vector<string>{"WiFi", "Холодильник", "Кофемашина", "Минибар"});
         // saveToFile<RoomCategory>("RoomCategory.txt", categories); // Можно сохранить сразу
     }
 
@@ -75,12 +77,12 @@ int main() {
     do {
         showMainMenu();
         // Безопасный ввод для главного меню
-        while (!(std::cin >> choice)) {
-            std::cout << "Неверный ввод. Пожалуйста, введите число: ";
-            std::cin.clear();
-            std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+        while (!(cin >> choice)) {
+            cout << "Неверный ввод. Пожалуйста, введите число: ";
+            cin.clear();
+            cin.ignore((numeric_limits<streamsize>::max)(), '\n');
         }
-        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); // Очистка буфера после числа
+        cin.ignore((numeric_limits<streamsize>::max)(), '\n'); // Очистка буфера после числа
 
         switch (choice) {
         case 1:
@@ -99,11 +101,11 @@ int main() {
             employeeMenu(employees);
             break;
         case 0:
-            std::cout << "Сохранение данных и выход из программы..." << std::endl;
+            cout << "Сохранение данных и выход из программы..." << endl;
             saveAllData(guests, categories, rooms, employees, bookings, payments);
             break;
         default:
-            std::cout << "Неверный выбор. Повторите попытку." << std::endl;
+            cout << "Неверный выбор. Повторите попытку." << endl;
         }
     } while (choice != 0);
 

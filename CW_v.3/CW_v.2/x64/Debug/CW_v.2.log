@@ -1,2 +1,12 @@
-﻿  main.cpp
+﻿  Booking.cpp
+  Employee.cpp
+  Guest.cpp
+  Menu.cpp
+  Payment.cpp
+  Person.cpp
+  Room.cpp
+  RoomCategory.cpp
+  Utils.cpp
+  main.cpp
+  Создание кода...
   CW_v.2.vcxproj -> C:\Users\dengi\source\repos_OOP\OOP\CW_v.3\x64\Debug\CW_v.2.exe

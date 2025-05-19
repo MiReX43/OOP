@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream> // Для fromString
 #include "RoomCategory.h" // Для displayDetails
-
+using namespace std;
 class Room {
     int roomNumber;
     int categoryId;
@@ -26,8 +26,8 @@ public:
 
     void displayDetails(const RoomCategory& category) const; // Передаем по ссылке
 
-    std::string toString() const;
-    static Room fromString(const std::string& line);
+    string toString() const;
+    static Room fromString(const string& line);
 };
 
 #endif // ROOM_H

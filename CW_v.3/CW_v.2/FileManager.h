@@ -6,14 +6,14 @@
 #include <fstream>
 #include <iostream> // Для отладки ошибок, если нужно
 
-
+using namespace std;
 // --- Функции чтения/записи данных ---
 
 template <typename T>
-void saveToFile(const std::string& filename, const std::vector<T>& vec) {
-    std::ofstream fout(filename);
+void saveToFile(const string& filename, const vector<T>& vec) {
+    ofstream fout(filename);
     if (!fout.is_open()) {
-        std::cerr << "Ошибка: Не удалось открыть файл для записи: " << filename << std::endl;
+        cerr << "Ошибка: Не удалось открыть файл для записи: " << filename << endl;
         return;
     }
     for (const auto& item : vec) {
@@ -23,27 +23,27 @@ void saveToFile(const std::string& filename, const std::vector<T>& vec) {
 }
 
 template <typename T>
-void loadFromFile(const std::string& filename, std::vector<T>& vec) {
-    std::ifstream fin(filename);
+void loadFromFile(const string& filename, vector<T>& vec) {
+    ifstream fin(filename);
     if (!fin.is_open()) {
-        // std::cerr << "Информация: Не удалось открыть файл для чтения: " << filename << ". Возможно, он будет создан позже." << std::endl;
+        // cerr << "Информация: Не удалось открыть файл для чтения: " << filename << ". Возможно, он будет создан позже." << endl;
         return; // Не ошибка, если файл просто еще не существует
     }
-    std::string line;
+    string line;
     vec.clear(); // Очищаем вектор перед загрузкой
-    while (std::getline(fin, line)) {
+    while (getline(fin, line)) {
         if (line.empty()) continue; // Пропускаем пустые строки
         try {
             vec.push_back(T::fromString(line));
         }
-        catch (const std::invalid_argument& ia) {
-            std::cerr << "Ошибка парсинга строки (invalid_argument): " << line << " в файле " << filename << " - " << ia.what() << std::endl;
+        catch (const invalid_argument& ia) {
+            cerr << "Ошибка парсинга строки (invalid_argument): " << line << " в файле " << filename << " - " << ia.what() << endl;
         }
-        catch (const std::out_of_range& oor) {
-            std::cerr << "Ошибка парсинга строки (out_of_range): " << line << " в файле " << filename << " - " << oor.what() << std::endl;
+        catch (const out_of_range& oor) {
+            cerr << "Ошибка парсинга строки (out_of_range): " << line << " в файле " << filename << " - " << oor.what() << endl;
         }
-        catch (const std::exception& e) {
-            std::cerr << "Общая ошибка парсинга строки: " << line << " в файле " << filename << " - " << e.what() << std::endl;
+        catch (const exception& e) {
+            cerr << "Общая ошибка парсинга строки: " << line << " в файле " << filename << " - " << e.what() << endl;
         }
     }
     fin.close();
